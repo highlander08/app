@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    entrypoint: ./.docker/entrypoint.sh
+    container_name: postgres
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/node/app
+
+  db:
+    build: ./.docker/postgres
+    container_name: postgres
+    restart: always
+    tty: true
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./.docker/dbdata:/var/lib/postgres
+    environment:
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=postgres
